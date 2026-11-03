@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore Sdk.slnx
+
+    - name: Build
+      run: dotnet build Sdk.slnx --no-restore -c Release
+
+    - name: Test
+      run: dotnet test Sdk.slnx --no-build -c Release --verbosity normal
+
+    - name: Pack NuGet package
+      run: dotnet pack src/Sdk/Sdk.csproj -c Release -o artifacts/
