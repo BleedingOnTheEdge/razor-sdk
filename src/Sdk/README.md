@@ -1,6 +1,6 @@
 # README.md — Sdk
 
-**Location:** `core/src/Sdk/README.md`  
+**Location:** `src/Sdk/README.md`  
 **Status:** Authoritative  
 **Last Updated:** 2026-07-09  
 
