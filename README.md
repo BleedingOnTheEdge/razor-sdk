@@ -2,24 +2,38 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-10.0-purple.svg)](https://dotnet.microsoft.com/)
+[![GitHub Org](https://img.shields.io/badge/Org-BleedingOnTheEdge-blue)](https://github.com/BleedingOnTheEdge)
 
-The official developer SDK for building plugins, adapters, strategies, and hooks for the **Razor** algorithmic trading platform.
+The official developer SDK for building plugins, adapters, execution hooks, slots, and strategies for the **Razor** algorithmic trading platform.
 
 ---
 
-## Overview
+## 🏛 Organization Context & Cross-Repo Topology
 
-The **Razor SDK** provides pure public contracts, domain types, hook interfaces (`IHook`, `ISlot`), and decorator attributes. It is intentionally decoupled from engine execution internals, providing a stable public API surface for extension developers.
+This repository is part of the **BleedingOnTheEdge** open and proprietary trading infrastructure:
+
+- **Orchestrator**: [`BleedingOnTheEdge/razor`](https://github.com/BleedingOnTheEdge/razor) (Central scripts, organization bootstrap, and cross-repo coordination)
+- **Engine Runtime**: [`BleedingOnTheEdge/razor-engine`](https://github.com/BleedingOnTheEdge/razor-engine) (Headless execution engine running SDK-compliant strategies and adapters)
+- **Control Panel**: [`BleedingOnTheEdge/razor-panel`](https://github.com/BleedingOnTheEdge/razor-panel) (SaaS control plane & marketplace where SDK extensions are distributed)
+- **Reference Samples**: [`BleedingOnTheEdge/razor-samples`](https://github.com/BleedingOnTheEdge/razor-samples) (Working broker adapters, multi-asset strategies, and polyglot bridge templates)
+- **Documentation**: [`BleedingOnTheEdge/razor-docs`](https://github.com/BleedingOnTheEdge/razor-docs) (Technical architecture documents, contract specs, and developer guides)
+
+---
+
+## 📦 Overview & Architectural Role
+
+The **Razor SDK** provides pure public contracts, domain types, hook interfaces (`IHook`, `ISlot`), and decorator attributes. It is completely decoupled from engine execution internals, providing a stable public API surface for extension developers and broker integrations.
 
 ### Key Capabilities
 
-- **Contracts & Interfaces**: Build custom broker adapters, execution hooks, strategy models, and indicators.
-- **Hook Framework**: Intercept orders, ticks, bar closes, and lifecycle events.
-- **Zero Runtime Overhead**: Designed for ultra-low latency memory structures, cache-line friendly layouts, and zero GC pressure in trading loops.
+- **Extension Interfaces**: Build custom broker adapters (`IBrokerAdapter`), strategy models (`StrategyBase`), indicators (`IIndicator`), and neural network signal filters (`INeuralNetworkModel`).
+- **Hook Framework**: Intercept orders, ticks, bar closes, and lifecycle events (`IOrderValidationHook`, `IOrderExecutionHook`, `ITickFilterHook`).
+- **Slot System**: Inject custom behavior dynamically into predefined execution slots.
+- **Zero Overhead**: Engineered for ultra-low latency, cache-friendly memory layouts, and zero GC allocation in hot trading loops.
 
 ---
 
-## Installation
+## 🚀 Installation
 
 Add the package via the .NET CLI:
 
@@ -27,7 +41,7 @@ Add the package via the .NET CLI:
 dotnet add package BleedingOnTheEdge.Sdk
 ```
 
-Or add the dependency directly in your `.csproj`:
+Or reference it in your `.csproj`:
 
 ```xml
 <PackageReference Include="BleedingOnTheEdge.Sdk" Version="1.0.0" />
@@ -35,7 +49,7 @@ Or add the dependency directly in your `.csproj`:
 
 ---
 
-## Quick Start: Developing an Adapter or Strategy
+## 💡 Quick Start: Developing an Adapter or Strategy
 
 ### Creating a Custom Strategy
 ```csharp
@@ -45,7 +59,7 @@ public class MyCustomStrategy : StrategyBase
 {
     public override void OnTick(in Tick tick)
     {
-        // Process market tick
+        // High-frequency market tick processing
     }
 }
 ```
@@ -69,24 +83,26 @@ public class RiskAuditHook : IOrderValidationHook
 }
 ```
 
+For full reference implementations including MetaTrader 5 and Nobitex adapters, see [BleedingOnTheEdge/razor-samples](https://github.com/BleedingOnTheEdge/razor-samples).
+
 ---
 
-## Building and Testing Locally
+## 💻 Building and Testing Locally
 
-Requirements:
+### Prerequisites
 - [.NET 10.0 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 
 ```bash
-# Build SDK and tests
-dotnet build Sdk.sln
+# Build SDK solution and test projects
+dotnet build Sdk.slnx
 
-# Run all unit and integration tests
-dotnet test Sdk.sln
+# Run all 583 unit and integration tests
+dotnet test Sdk.slnx
 ```
 
 ---
 
-## Contributing & License
+## 🤝 Contributing & License
 
 Contributions, issues, and feature requests are welcome!
 Distributed under the **MIT License**. See `LICENSE` for details.
