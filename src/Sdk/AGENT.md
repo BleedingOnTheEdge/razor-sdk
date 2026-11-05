@@ -22,13 +22,13 @@ Public SDK abstractions, developer interfaces, broker contracts, indicator defin
   - Internal engine or kernel implementation details.
 
 ## 3. Local Nx Target Delegations
-- `nx lint sdk` -> `dotnet format --verify-no-changes core/src/Sdk/Sdk.csproj`
-- `nx test sdk` -> `dotnet test core/tests/Sdk.UnitTests/Sdk.UnitTests.csproj -c Release`
-- `nx build sdk` -> `dotnet build core/src/Sdk/Sdk.csproj -c Release`
-- `nx audit sdk` -> `dotnet list core/src/Sdk/Sdk.csproj package --vulnerable`
+- `nx lint sdk` -> `dotnet format --verify-no-changes src/Sdk/Sdk.csproj`
+- `nx test sdk` -> `dotnet test tests/Sdk.UnitTests/Sdk.UnitTests.csproj -c Release`
+- `nx build sdk` -> `dotnet build src/Sdk/Sdk.csproj -c Release`
+- `nx audit sdk` -> `dotnet list src/Sdk/Sdk.csproj package --vulnerable`
 
 ## 4. Test & Verification Rules
-- 95%+ line and branch coverage enforced strictly by `coverage_gate.py` (`core/tests/Sdk.UnitTests`, `core/tests/Sdk.IntegrationTests`).
+- 95%+ line and branch coverage enforced strictly by `coverage_gate.py` (`tests/Sdk.UnitTests`, `tests/Sdk.IntegrationTests`).
 - Comprehensive regression testing for all public interface contracts.
 - Deterministic behavior across all indicator and math primitives.
 
