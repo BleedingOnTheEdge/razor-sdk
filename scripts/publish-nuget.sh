@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------
 # BleedingOnTheEdge - Razor SDK NuGet Publishing Script
 # Organization: BleedingOnTheEdge (sina1vali@gmail.com)
-# Package: BleedingOnTheEdge.Sdk
+# Package: BleedingOnTheEdge.Razor.Sdk
 # -----------------------------------------------------------------------------
 set -e
 
@@ -27,10 +27,10 @@ GITHUB_SOURCE="https://nuget.pkg.github.com/BleedingOnTheEdge/index.json"
 
 print_header() {
   echo -e "${CYAN}${BOLD}====================================================================${NC}"
-  echo -e "${CYAN}${BOLD}       BleedingOnTheEdge.Sdk - NuGet Package Publisher             ${NC}"
+  echo -e "${CYAN}${BOLD}       BleedingOnTheEdge.Razor.Sdk - NuGet Package Publisher             ${NC}"
   echo -e "${CYAN}${BOLD}====================================================================${NC}"
   echo -e "Organization: ${BOLD}BleedingOnTheEdge${NC} (sina1vali@gmail.com)"
-  echo -e "Package ID:   ${BOLD}BleedingOnTheEdge.Sdk${NC}"
+  echo -e "Package ID:   ${BOLD}BleedingOnTheEdge.Razor.Sdk${NC}"
   echo ""
 }
 
@@ -107,7 +107,7 @@ else
 fi
 
 # Clean and build release package
-echo -e "\n${CYAN}▶ 2. Building and packaging BleedingOnTheEdge.Sdk v${VERSION}...${NC}"
+echo -e "\n${CYAN}▶ 2. Building and packaging BleedingOnTheEdge.Razor.Sdk v${VERSION}...${NC}"
 rm -rf dist/nupkg
 mkdir -p dist/nupkg
 
@@ -119,8 +119,8 @@ dotnet pack src/Sdk/Sdk.csproj \
   -o dist/nupkg \
   --nologo
 
-NUPKG_PATH="dist/nupkg/BleedingOnTheEdge.Sdk.${VERSION}.nupkg"
-SNUPKG_PATH="dist/nupkg/BleedingOnTheEdge.Sdk.${VERSION}.snupkg"
+NUPKG_PATH="dist/nupkg/BleedingOnTheEdge.Razor.Sdk.${VERSION}.nupkg"
+SNUPKG_PATH="dist/nupkg/BleedingOnTheEdge.Razor.Sdk.${VERSION}.snupkg"
 
 if [ ! -f "$NUPKG_PATH" ]; then
   echo -e "${RED}Error: Expected package file not found at ${NUPKG_PATH}${NC}"
@@ -144,11 +144,11 @@ if [ -z "$API_KEY" ]; then
   echo -e "${YELLOW}====================================================================${NC}"
   echo -e "${YELLOW}               NuGet API Key Required                              ${NC}"
   echo -e "${YELLOW}====================================================================${NC}"
-  echo "To publish BleedingOnTheEdge.Sdk to nuget.org:"
+  echo "To publish BleedingOnTheEdge.Razor.Sdk to nuget.org:"
   echo "1. Sign in to https://www.nuget.org with account: sina1vali@gmail.com"
   echo "2. Go to: https://www.nuget.org/account/apikeys"
   echo "3. Create a key with 'Push new packages and package versions' scope"
-  echo "   for the 'BleedingOnTheEdge' organization or 'BleedingOnTheEdge.Sdk*'"
+  echo "   for the 'BleedingOnTheEdge' organization or 'BleedingOnTheEdge.Razor.Sdk*'"
   echo "4. Export or pass the key:"
   echo "     export NUGET_API_KEY=\"<your-api-key>\""
   echo "     ./scripts/publish-nuget.sh -v ${VERSION}"
@@ -169,14 +169,14 @@ if [ -z "$API_KEY" ]; then
 fi
 
 # Push to NuGet.org
-echo -e "\n${CYAN}▶ 3. Pushing BleedingOnTheEdge.Sdk v${VERSION} to NuGet Gallery (nuget.org)...${NC}"
+echo -e "\n${CYAN}▶ 3. Pushing BleedingOnTheEdge.Razor.Sdk v${VERSION} to NuGet Gallery (nuget.org)...${NC}"
 dotnet nuget push "$NUPKG_PATH" \
   --api-key "$API_KEY" \
   --source "$NUGET_SOURCE" \
   --skip-duplicate
 
 echo -e "${GREEN}${BOLD}✓ Published successfully to NuGet!${NC}"
-echo -e "Public listing: ${BOLD}https://www.nuget.org/packages/BleedingOnTheEdge.Sdk/${VERSION}${NC}"
+echo -e "Public listing: ${BOLD}https://www.nuget.org/packages/BleedingOnTheEdge.Razor.Sdk/${VERSION}${NC}"
 
 # Optional Push to GitHub Packages
 if [ "$PUSH_GITHUB" = true ]; then

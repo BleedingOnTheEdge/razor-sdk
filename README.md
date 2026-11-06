@@ -1,4 +1,4 @@
-# Razor SDK (`BleedingOnTheEdge.Sdk`)
+# Razor SDK (`BleedingOnTheEdge.Razor.Sdk`)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-10.0-purple.svg)](https://dotnet.microsoft.com/)
@@ -38,13 +38,13 @@ The **Razor SDK** provides pure public contracts, domain types, hook interfaces 
 Add the package via the .NET CLI:
 
 ```bash
-dotnet add package BleedingOnTheEdge.Sdk
+dotnet add package BleedingOnTheEdge.Razor.Sdk
 ```
 
 Or reference it in your `.csproj`:
 
 ```xml
-<PackageReference Include="BleedingOnTheEdge.Sdk" Version="1.0.0" />
+<PackageReference Include="BleedingOnTheEdge.Razor.Sdk" Version="1.0.0" />
 ```
 
 ---
