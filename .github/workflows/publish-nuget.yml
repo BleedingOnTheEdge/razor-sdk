@@ -1,0 +1,59 @@
+name: Publish SDK to NuGet
+
+on:
+  push:
+    branches:
+      - prod
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Optional package version override (e.g. 1.0.1)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Build, Test and Publish to NuGet
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore src/Sdk/Sdk.csproj
+
+      - name: Run Unit Tests
+        run: dotnet test tests/Sdk.UnitTests/Sdk.UnitTests.csproj -c Release --no-restore --nologo
+
+      - name: Run Integration Tests
+        run: dotnet test tests/Sdk.IntegrationTests/Sdk.IntegrationTests.csproj -c Release --no-restore --nologo
+
+      - name: Pack NuGet Package
+        run: |
+          VERSION_ARG=""
+          if [ -n "${{ inputs.version }}" ]; then
+            VERSION_ARG="-p:Version=${{ inputs.version }}"
+          fi
+          dotnet pack src/Sdk/Sdk.csproj -c Release -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg -o ./nupkg $VERSION_ARG --nologo
+
+      - name: Publish to NuGet Gallery
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -n "$NUGET_API_KEY" ]; then
+            dotnet nuget push ./nupkg/*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          else
+            # Trusted Publishing via OIDC
+            dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate
+          fi

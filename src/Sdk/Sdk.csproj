@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <PackageId>BleedingOnTheEdge.Sdk</PackageId>
+        <PackageId>BleedingOnTheEdge.Razor.Sdk</PackageId>
         <Version>1.0.0</Version>
         <Authors>BleedingOnTheEdge, Sina Vali</Authors>
         <Company>BleedingOnTheEdge</Company>
