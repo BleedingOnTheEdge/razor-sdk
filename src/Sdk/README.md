@@ -105,9 +105,9 @@ Hook callbacks are strongly typed. Action hook callbacks **must be synchronous**
 
 ## Documentation
 
-- [Razor Principles](../../../docs/005-cross-cutting/005-001-principles/INDEX.md)
-- [Configuration Reference](../../../docs/004-contracts/004-001-configuration-reference/INDEX.md)
-- [Extension Developer Guide](../../../docs/004-contracts/004-010-extension-developer-guide/INDEX.md)
+- [Razor Principles](../../../razor-docs/docs/005-cross-cutting/005-001-principles/INDEX.md)
+- [Configuration Reference](../../../razor-docs/docs/004-contracts/004-001-configuration-reference/INDEX.md)
+- [Extension Developer Guide](../../../razor-docs/docs/004-contracts/004-010-extension-developer-guide/INDEX.md)
 
 ---
 
@@ -116,7 +116,7 @@ Hook callbacks are strongly typed. Action hook callbacks **must be synchronous**
 1. Create a .NET class library targeting `net10.0`.
 2. Add this package:
    ```xml
-   <PackageReference Include="Sdk" Version="1.0.0" />
+   <PackageReference Include="BleedingOnTheEdge.Razor.Sdk" Version="1.0.0" />
    ```
 3. Add the SDK version attribute:
    ```csharp

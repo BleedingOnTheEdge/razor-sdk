@@ -63,6 +63,11 @@ public abstract class DefaultMarketCalculator : IMarketCalculator
     public virtual double CalculatePnL(SymbolProperties symbolProps, double entryPrice, double currentPrice, double volume, OrderType type)
     {
         ArgumentNullException.ThrowIfNull(symbolProps);
+        if (symbolProps.TickSize <= 0)
+        {
+            throw new ConfigurationException("SymbolProperties.TickSize must be positive.");
+        }
+
         double diff = type == OrderType.Buy ? currentPrice - entryPrice : entryPrice - currentPrice;
         return diff * volume * symbolProps.TickValue / symbolProps.TickSize;
     }
