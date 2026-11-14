@@ -161,7 +161,7 @@ public static class TickSynthesizer
         if (minTime != long.MaxValue)
         {
             long estimatedSeconds = (maxTime - minTime) / TimeSpan.TicksPerSecond;
-            estimatedTicks = estimatedSeconds > int.MaxValue ? int.MaxValue : (int)estimatedSeconds;
+            estimatedTicks = estimatedSeconds < 0 ? 0 : (estimatedSeconds > int.MaxValue ? int.MaxValue : (int)estimatedSeconds);
         }
 
         return (estimatedTicks, maxTicks);

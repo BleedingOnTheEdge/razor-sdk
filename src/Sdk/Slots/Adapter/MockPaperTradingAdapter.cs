@@ -8,6 +8,7 @@ namespace Sdk.Slots.Adapter;
 
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using Sdk.Shared;
 
 /// <summary>
@@ -420,6 +421,7 @@ public sealed class MockPaperTradingAdapter : IAdapterCapability
 
             double currentBid = basePrice;
             Random historyRng = new(request.Symbol.GetHashCode(StringComparison.Ordinal) ^ 0x5F3759DF);
+            Span<byte> tickBytes = stackalloc byte[32];
             for (int i = 0; i < recordCount; i++)
             {
                 currentBid += (historyRng.NextDouble() - 0.495) * (currentBid * 0.0002);
@@ -428,12 +430,9 @@ public sealed class MockPaperTradingAdapter : IAdapterCapability
 
                 var tick = new Tick(tickTime, currentBid, currentAsk, 1.0, true);
 
-                // Write raw sequential Tick bytes
-                writer.Write(tick.Time);
-                writer.Write(tick.Bid);
-                writer.Write(tick.Ask);
-                writer.Write(tick.Volume);
-                writer.Write(tick.IsSynthetic);
+                // Write raw sequential 32-byte Tick bytes
+                MemoryMarshal.Write(tickBytes, in tick);
+                writer.Write(tickBytes);
             }
         }
 
