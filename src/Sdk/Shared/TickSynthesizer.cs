@@ -18,6 +18,11 @@ public static class TickSynthesizer
         }
 
         int barsCount = bars.Length;
+        if ((long)barsCount * 4 > int.MaxValue)
+        {
+            throw new NotSupportedException($"Total synthetic ticks exceed maximum supported per array ({int.MaxValue:N0}).");
+        }
+
         int totalTicks = barsCount * 4;
         Tick[] ticks = GC.AllocateUninitializedArray<Tick>(totalTicks);
         ref Bar barRef = ref MemoryMarshal.GetArrayDataReference(bars);
@@ -67,6 +72,11 @@ public static class TickSynthesizer
         if (ticksPerBar < 2)
         {
             ticksPerBar = 2;
+        }
+
+        if ((long)bars.Length * ticksPerBar > int.MaxValue)
+        {
+            throw new NotSupportedException($"Total synthetic ticks exceed maximum supported per array ({int.MaxValue:N0}).");
         }
 
         CustomizedRandom rng = new(seed);
@@ -151,7 +161,7 @@ public static class TickSynthesizer
         if (minTime != long.MaxValue)
         {
             long estimatedSeconds = (maxTime - minTime) / TimeSpan.TicksPerSecond;
-            estimatedTicks = estimatedSeconds > int.MaxValue ? int.MaxValue : (int)estimatedSeconds;
+            estimatedTicks = estimatedSeconds < 0 ? 0 : (estimatedSeconds > int.MaxValue ? int.MaxValue : (int)estimatedSeconds);
         }
 
         return (estimatedTicks, maxTicks);

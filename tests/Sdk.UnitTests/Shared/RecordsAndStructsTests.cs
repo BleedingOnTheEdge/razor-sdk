@@ -180,6 +180,12 @@ public class TickTests
             HashCode.Combine(100L, 1.5, 1.6, 10.0, true),
             new Tick(100, 1.5, 1.6, 10, true).GetHashCode());
     }
+
+    [Fact]
+    public void Tick_SizeOf_IsExactly32Bytes()
+    {
+        Assert.Equal(32, System.Runtime.CompilerServices.Unsafe.SizeOf<Tick>());
+    }
 }
 
 public class SymbolPropertiesTests

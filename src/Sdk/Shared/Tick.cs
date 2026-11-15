@@ -1,27 +1,41 @@
+using System;
 using System.Runtime.InteropServices;
 
 namespace Sdk.Shared;
 
 /// <summary>
-/// A single tick price update. Layout is sequential and packed for zero‑copy binary I/O.
+/// A single tick price update. Layout is sequential and packed for zero‑copy binary I/O (exactly 32 bytes).
 /// </summary>
-[StructLayout(LayoutKind.Sequential, Pack = 1)]
-public readonly struct Tick(long time, double bid, double ask, double volume, bool isSynthetic = false) : IEquatable<Tick>
+[StructLayout(LayoutKind.Sequential, Pack = 8)]
+public readonly struct Tick : IEquatable<Tick>
 {
-    /// <summary>Timestamp in 100‑ns ticks.</summary>
-    public readonly long Time = time;
+    private const long SyntheticFlag = unchecked((long)0x8000_0000_0000_0000UL);
+
+    private readonly long _timeAndFlags;
 
     /// <summary>Bid price.</summary>
-    public readonly double Bid = bid;
+    public readonly double Bid;
 
     /// <summary>Ask price.</summary>
-    public readonly double Ask = ask;
+    public readonly double Ask;
 
     /// <summary>Tick volume.</summary>
-    public readonly double Volume = volume;
+    public readonly double Volume;
+
+    /// <summary>Initializes a new instance of the <see cref="Tick"/> struct.</summary>
+    public Tick(long time, double bid, double ask, double volume, bool isSynthetic = false)
+    {
+        _timeAndFlags = (time & ~SyntheticFlag) | (isSynthetic ? SyntheticFlag : 0L);
+        Bid = bid;
+        Ask = ask;
+        Volume = volume;
+    }
+
+    /// <summary>Timestamp in 100‑ns ticks.</summary>
+    public long Time => _timeAndFlags & ~SyntheticFlag;
 
     /// <summary>True if this tick was synthesised (e.g., from bar data).</summary>
-    public readonly bool IsSynthetic = isSynthetic;
+    public bool IsSynthetic => (_timeAndFlags & SyntheticFlag) != 0;
 
     /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is Tick other && Equals(other);
