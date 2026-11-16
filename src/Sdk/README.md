@@ -114,7 +114,11 @@ Hook callbacks are strongly typed. Action hook callbacks **must be synchronous**
 ## Quick Start
 
 1. Create a .NET class library targeting `net10.0`.
-2. Add this package:
+2. Add this package via CLI or package reference:
+   ```bash
+   dotnet add package BleedingOnTheEdge.Razor.Sdk
+   ```
+   Or in your `.csproj`:
    ```xml
    <PackageReference Include="BleedingOnTheEdge.Razor.Sdk" Version="1.0.0" />
    ```
